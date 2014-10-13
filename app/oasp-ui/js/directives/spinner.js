@@ -5,7 +5,7 @@ angular.module('oasp-ui')
         return {
             restrict: 'A',
             replace: true,
-            templateUrl: 'html/main/spinner.html',
+            templateUrl: 'main/html/spinner.html',
             scope: {
                 spinnerVisible: '=spinner'
             },

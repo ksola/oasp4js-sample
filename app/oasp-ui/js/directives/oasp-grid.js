@@ -5,7 +5,7 @@ angular.module('oasp-ui').
         return {
             restrict: 'A',
             replace: true,
-            templateUrl: 'html/main/oasp-grid.html',
+            templateUrl: 'main/html/oasp-grid.html',
             scope: {
                 title: '@?',
                 rows: '=',

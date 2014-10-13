@@ -16,7 +16,7 @@ angular.module('app.tableMgmt').controller('TableSearchCntl',
         $scope.tables = initialTableList;
         $scope.openEditDialog = function (tableRow) {
             $modal.open({
-                templateUrl: 'html/table-mgmt/table-details.html',
+                templateUrl: 'table-mgmt/html/table-details.html',
                 backdrop: 'static',
                 keyboard: false,
                 controller: 'TableDetailsCntl',

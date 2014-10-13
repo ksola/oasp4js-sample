@@ -14,15 +14,15 @@ describe('Module: \'app.main\'', function () {
     });
 
     it('defines a route for the Sign In dialog', inject(function (SIGN_IN_DLG_PATH) {
-        expect(routeProvider.when).toHaveBeenCalledWith(SIGN_IN_DLG_PATH, {templateUrl: 'html/main/sign-in.html'});
+        expect(routeProvider.when).toHaveBeenCalledWith(SIGN_IN_DLG_PATH, {templateUrl: 'main/html/sign-in.html'});
     }));
 
     it('defines a route for a blank page', inject(function () {
-        expect(routeProvider.when).toHaveBeenCalledWith('/', {templateUrl: 'html/main/blank.html'});
+        expect(routeProvider.when).toHaveBeenCalledWith('/', {templateUrl: 'main/html/blank.html'});
     }));
 
     it('defines the default route redirecting to the welcome dialog', function () {
-        expect(routeProvider.otherwise).toHaveBeenCalledWith({templateUrl: 'html/main/page-not-found.html'});
+        expect(routeProvider.otherwise).toHaveBeenCalledWith({templateUrl: 'main/html/page-not-found.html'});
     });
 
 });

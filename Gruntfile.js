@@ -92,17 +92,18 @@ module.exports = function (grunt) {
         less: {
             all: {
                 options: {
-                    compress: false
+                    compress: false,
+                    paths: ['<%= config.app %>']
                 },
                 files: {
-                    '<%= config.tmp %>/css/oasp.css': '<%= config.app %>/css/oasp.less'
+                    '<%= config.tmp %>/css/oasp.css': ['<%= config.app %>/*/css/*.less', '<%= config.tmp %>/*/css/*.less']
                 }
             }
         },
         watch: {
             options: { livereload: true },
             less: {
-                files: ['<%= config.app %>/css/*.less'],
+                files: ['<%= config.app %>/*/css/*.less'],
                 tasks: ['less']
             },
             index: {
@@ -110,7 +111,7 @@ module.exports = function (grunt) {
                 tasks: ['copy:develop']
             },
             cached: {
-                files: ['<%= config.app %>/html/**/cached/**/*.html'],
+                files: ['<%= config.app %>/*/html/cached/**/*.html'],
                 tasks: ['html2js']
             }
         },
@@ -215,14 +216,16 @@ module.exports = function (grunt) {
         },
         html2js: {
             options: {
-                module: 'oasp.templates',
-                singleModule: true,
+                module: function(path){
+                    grunt.log.write(JSON.stringify(path))
+                   return path;
+                },
                 rename: function (moduleName) {
                     return moduleName.replace('../app/', '').replace('cached/', '');
                 }
             },
             main: {
-                src: ['<%= config.app %>/html/**/cached/**/*.html'],
+                src: ['<%= config.app %>/*/html/cached/**/*.html'],
                 dest: '<%= config.tmp %>/js/app-templates.js'
             }
         },
@@ -237,10 +240,10 @@ module.exports = function (grunt) {
         jslint: {
             client: {
                 src: [
-                    '<%= config.app %>/js/**/*.js'
+                    '<%= config.app %>/*/js/**/*.js'
                 ],
                 exclude: [
-                    '<%= config.app %>/js/**/*.spec.js'
+                    '<%= config.app %>/*/js/**/*.spec.js'
                 ],
                 directives: {
                     browser: true,
@@ -251,7 +254,7 @@ module.exports = function (grunt) {
             },
             test: {
                 src: [
-                    '<%= config.app %>/js/**/*.spec.js'
+                    '<%= config.app %>/*/js/**/*.spec.js'
                 ],
                 directives: {
                     browser: true,
