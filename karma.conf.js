@@ -28,10 +28,10 @@ module.exports = function (config) {
             'app/bower_components/angular-spinner/angular-spinner.js',
             'app/bower_components/angular-ui-select/dist/select.js',
             '.tmp/js/app-templates.js',
-            'app/js/*/*.js',
-            'app/js/**/*.js',
-            'app/js/**/*.mock.js',
-            'app/js/**/*.spec.js'
+            'app/*/js/*/*.js',
+            'app/*/js/**/*.js',
+            'app/*/js/**/*.mock.js',
+            'app/*/js/**/*.spec.js'
         ],
 
         // list of files / patterns to exclude
