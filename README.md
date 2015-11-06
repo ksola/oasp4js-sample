@@ -1,288 +1,133 @@
-Sample Application
+Sample Application [![Build Status](https://travis-ci.org/oasp/oasp4js.svg?branch=development)](https://travis-ci.org/oasp/oasp4js) [![Coverage Status](https://coveralls.io/repos/oasp/oasp4js/badge.svg?branch=development)](https://coveralls.io/r/oasp/oasp4js?branch=development)                                                                                                                
 ===
  
-
-The sample application is built on top of the [application template](https://github.com/oasp/oasp4js-app-template) and [oasp4js extensions](https://github.com/oasp/oasp4js) showing their usage scenarios.
-
-
-
-
-
-
+The sample application is built on top of the [application template](https://github.com/oasp/oasp4js-app-template) and is an AngularJS application. Some of the AngularJS modules (e.g. oasp-security, oasp-i18n, etc.) which can be reused in your application are available in [this repository](https://github.com/oasp/oasp4js-bower) either directly or using the Bower package manager. The sample application needs the [oasp4j](https://github.com/oasp/oasp4j) (Java) server part to be installed.
 
 Getting Started
 ---
-To get started you simply need to create a specific folder structure, clone repositories for the server part which is written in java, clone the repository for the client and set up a Tomcat web server.
 
-
-
-
-
-
+To get started you need to clone the oasp4j repository containing the server part, build and deploy it on a Tomcat server. To get started with the client part you need to clone the oasp4js repository, build the client and start it.
 
 Install prerequisites
 ---
 
+You need a Git client to clone the repositories and the Node.js platform (including its package manager - npm) which allows Gulp and Bower to install the dependencies and build the application. [Here](https://github.com/oasp/oasp4js/wiki/Prerequisites) you can learn how to install the prerequisites. 
+Also, for the server part you need Maven (required version: 3.x) and Tomcat (min. version: 7.x, recommended version: 8.x) to be installed. For installation details please refer to the [Tomcat's](http://tomcat.apache.org/download-80.cgi) and [Maven's](http://maven.apache.org/download.cgi) home pages. 
 
-
-You need a Git client to clone the repositories and the Node.js platform (including its package manager - npm) which allows Grunt and Bower to install the dependencies and build the application. [Here](https://github.com/oasp/oasp4js-app-template/wiki/Prerequisites) you can learn how to install the prerequisites. 
-Install also Tomcat on your machine. We assume in this example that the Tomcat installation location is 
-
-
-
-```
- '<tomcat_dir>'
-```
-
-
-
-
-Prepare folder structure
+Create the `<oasp_dir>` directory for the sample application
 ---
 
-
-
-Create directories :
-
-
-	<oasp_dir> 
-           | 
-		   |‾‾‾ java
-		   |
-            ‾‾‾ js
- 
-
-
+```
+mkdir <oasp_dir>
+cd <oasp_dir>    
+```
 
 Set up the server part of the application
------
+---
 
-* Open command prompt and go to the '\java' folder
-
-```  
-
-    cd <oasp_dir>\java 
-
-```
-
-
-* Clone the server application repository using Git. In command prompt type:
+Clone the oasp4j repository:
 
 ```  
-
-    git clone https://github.com/oasp/oasp4j.git
-
-    git clone https://github.com/oasp/oasp4j-sample.git 
-
-
+git clone https://github.com/oasp/oasp4j.git
 ```
 
-* Now install the oasp4j java component. Open command prompt and type:
-
+Let Maven build the server part:
 
 ```  
- 
-    cd <oasp_dir>\java\oasp4j 
-
-    mvn clean install 
-
+cd oasp4j
+mvn clean install 
 ```
 
-
-* Now install the oasp4j-sample java component. Open command prompt and type:
-
-
-
-```
- 
-    cd <oasp_dir>\java\oasp4j-sample 
- 
-    mvn clean install
-
-```
-
-
-* A file 'oasp4j-example-application.war' should appear in the following location: 
+After a successful build, the `oasp4j-sample-server.war` file should appear in the following directory: 
 
 ``` 
-<oasp_dir>\java\oasp4j-sample\oasp4j-example-application\target
+<oasp_dir>\oasp4j\oasp4j-samples\oasp4j-sample-server\target
+
 ```
 
-
-* Copy the 'oasp4j-example-application.war' file to 
+Assuming you have installed the Tomcat in the `<tomcat_dir>` directory, copy the 'oasp4j-sample-server.war' file to 
 
 ```
 <tomcat_dir>\webapps
 ```
 
-Set up the Tomcat web server
----
+Edit the `<tomcat_dir>\conf\tomcat-users.xml` file. Add the following roles and users to it: 
 
-
-* Set up Tomcat users
-
-Edit the '<tomcat_dir>\conf\tomcat-users.xml' file. Add the following roles and user passwords to it: 
-
-
-
-```
+```xml
 <tomcat-users>
-  <role rolename="Chief"/>
-  <role rolename="Waiter"/>
-  <role rolename="Cook"/>
-  <role rolename="Barkeeper"/>
-  <user password="chief" roles="Chief" username="chief"/>
-  <user password="waiter" roles="Waiter" username="waiter"/>
-  <user password="barkeeper" roles="Barkeeper" username="barkeeper"/>
-  <user password="cook" roles="Cook" username="cook"/>
+  <user username="chief" password="chief" />
+  <user username="waiter" password="waiter" />
+  <user username="barkeeper" password="barkeeper" />
+  <user username="cook" password="cook" />
 </tomcat-users>
 ```
 
+<a name="changeTomcatsPortInServerXml"></a>
+Edit the `<tomcat_dir>\conf\server.xml` file. Change the Tomcat port to 8081 (if you don't want to change the Tomcat's port, then see the _[hint about how to configure a different port on the client side](#howToChangeTomcatsPortInConfigJson)_): 
 
-
-
-
-
-* Set up Tomcat ports
-
-	
-
-Edit the '<tomcat_dir>\conf\server.xml' file. 
-
-Set up the port 8081 which is used by our application: 
-
-```
+```xml
 <Connector connectionTimeout="20000" port="8081" protocol="HTTP/1.1" redirectPort="8443"/>
 ```
 
-
-
-
-
-
-
-
-
-Set up the client part of the application
------
-
-
-
-Now go to the '\js' folder - open command prompt and type: 
-
-  
-
-
-
-``` 
-
-    cd <oasp_dir>\js 
-
-    git clone https://github.com/oasp/oasp4js-sample.git 
-
+Set up the server part's configuration. Under `<tomcat_dir>\lib` create the `config\env` directories:
+ 
+```
+cd <tomcat_dir>\lib
+mkdir config\env
 ```
 
+Create the `application.properties` file, put it under `<tomcat_dir>\lib\config\env` and add the following content to it: 
 
-Now install dependencies -  go to the oasp4js-sample root directory: 
-
+```ini
+database.user.login = sa
+database.user.password =
+database.url = jdbc:h2:~/restaurant-db;INIT=create schema if not exists public
+database.migration.auto = true
+database.migration.clean = true
 ```
-    cd <oasp_dir>\js\oasp4js-sample
+_Hint: The value of the `database.user.password` property should be left empty, exactly as shown above._
 
-    npm install
-```
-
-
-Summary
------
-
-
-
-Now the whole project structure should look like this:
-
-
-
-	
-		<oasp_dir> 
-	              | 
-			      |‾‾‾ java
-				  |		|
-				  |		|‾‾‾ oasp4j
-				  |		|
-	     		  |	     ‾‾‾ oasp4j-sample
-				  |  
-	               ‾‾‾ js
-					    |
-     			         ‾‾‾ oasp4js-sample
-
-Start the application
-=============
-
-
-
-Execute the following file in order to start Tomcat: 
+Start the Tomcat: 
 
 ```
 <tomcat_dir>\bin\startup.bat 
 ```
 
+Set up the client part of the application
+---
 
-All commands which are listed below must be executed in the root directory of the project 'oasp4js-sample'. Open command prompt and type:
+Go back to the `<oasp_dir>` directory: 
 
 ```
-cd <oasp_dir>\js\oasp4js-sample
+cd ..
 ```
 
-
-Start the application (during development)
------
-
-
-
-Start the application using Grunt:
-
-
+Clone the oasp4js repository:
 
 ``` 
-
-    grunt serve
-
+git clone https://github.com/oasp/oasp4js.git 
 ```
 
+Install the client part's dependencies: 
 
+```
+cd oasp4js
+npm install
+```
 
-The above-mentioned Grunt's task opens the application in your default browser (http://localhost:9000/oasp4j-example-application/) and watches for any changes in HTML/JavaScript/CSS files. Once you make one, the page is reloaded automatically! 
+<a name="howToChangeTomcatsPortInConfigJson"></a> 
+_**Hint about how to configure a different Tomcat's port to be used on the client side:** If you did not want to change the Tomcat's port to 8081 as [described here](#changeTomcatsPortInServerXml), then you have to change the default port which is configured in the client part of the application, in the `<oasp_dir>\oasp4js\config.json` file. You have to set the correct port number in the following line of the aforementioned configuration file (replace '8888' with the port number which you configured for your Tomcat):_
 
+```
+"proxy": "http://localhost:8888",
+```
 
-
-Start the application (builds a version which is ready for distribution/deployment)
------
-
-
-
-Build the application using Grunt:
-
-
+Start the application using Gulp:
 
 ``` 
-
-    grunt serve:dist
-
+gulp serve
 ```
 
-
-
-The above-mentioned Grunt's task creates the '<oasp_dir>\js\oasp4js-sample\dist' directory and puts all HTML documents, CSS files (compiled from Less files) and JavaScript files (merged, minimized and obfuscated) there. The content of the aforementioned 'dist' directory is ready to be deployed to a web server. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+The above Gulp's task opens the client part of the application in your default browser and watches for any changes in HTML/JavaScript/CSS files. Once you change one, the page is reloaded automatically!
+ 
+You can sign in using the following credentials: waiter/waiter or cook/cook.
